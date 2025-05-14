@@ -1,0 +1,6 @@
+.vs/
+TestLib/TestLib/
+TestLib/x64/
+ExternalCall/bin/
+ExternalCall/obj/
+x64/

@@ -1,0 +1,37 @@
+using ExternalCall;
+
+// Calls the external DLL function with a callback to log messages at a specified trace level.
+ExtLibFunctions.TestLogCallbac(1, (int traceLevel, string traceMessage) =>
+{
+    var traceLevelStr = traceLevel switch
+    {
+        0 => "Error",
+        1 => "Warning",
+        2 => "Info",
+        _ => "Unknown"
+    };
+    Console.WriteLine($"[{traceLevelStr.ToUpper()}] {traceMessage}");
+});
+
+// Creates a SaleRequest struct and calls the external DLL function to process a sale, returning a SaleResponse struct.
+var saleRequest = new SaleRequest
+{
+    Value = 1000
+};
+var saleResponse = ExtLibFunctions.TestSale(saleRequest);
+Console.WriteLine($"Sale response: Id: {saleResponse.SaleId}, Amount: {saleResponse.Amount}");
+
+// Calls the external DLL function to modify an ANSI string and prints the result.
+const string inputStringAnsi = "Ansi string: Hello, World!";
+Console.WriteLine($"Input ANSI string: {inputStringAnsi}");
+var outputStringAnsi = ExtLibFunctions.ModifyInputAnsi(inputStringAnsi);
+Console.WriteLine($"Modified ANSI string: {outputStringAnsi}");
+
+// Calls the external DLL function to modify a Unicode string and prints the result.
+const string inputStringUnicode = "Unicode string: Hello, World!";
+Console.WriteLine($"Input string: {inputStringUnicode}");
+var outputStringUnicode = ExtLibFunctions.ModifyInputUni(inputStringUnicode);
+Console.WriteLine($"Modified Unicode string: {outputStringUnicode}");
+
+Console.WriteLine("Press any key to exit...");
+Console.ReadKey(true);
