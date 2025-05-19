@@ -9,22 +9,24 @@ public delegate void TraceCallback(int traceLevel, string traceMessage);
 
 public static class ExtLibFunctions
 {
+    private static IntTraceCallbackDelegate _callbackKeeper;
+
     [DllImport("TestLib", EntryPoint = "test_log_callback",
            CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     private static extern void TestLogCallbacExt(int traceLevel, IntPtr traceCallback);
 
     public static void TestLogCallback(int traceLevel, TraceCallback traceCallback)
     {
-        IntTraceCallbackDelegate traceDelegate = (int level, IntPtr messagePointer) =>
+        _callbackKeeper = (level, ptr) =>
         {
-            var message = messagePointer != IntPtr.Zero 
-                ? Marshal.PtrToStringAnsi(messagePointer) 
+            string? msg = ptr != IntPtr.Zero
+                ? Marshal.PtrToStringAnsi(ptr)
                 : null;
-            traceCallback(level, message!);
+            traceCallback(level, msg!);
         };
 
         var traceDelegatePointer = Marshal
-            .GetFunctionPointerForDelegate(traceDelegate);
+            .GetFunctionPointerForDelegate(_callbackKeeper);
         TestLogCallbacExt(traceLevel, traceDelegatePointer);
     }
 
