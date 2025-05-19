@@ -9,7 +9,7 @@ public delegate void TraceCallback(int traceLevel, string traceMessage);
 
 public static class ExtLibFunctions
 {
-    [DllImport("TestLib.dll", EntryPoint = "test_log_callback",
+    [DllImport("TestLib", EntryPoint = "test_log_callback",
            CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     private static extern void TestLogCallbacExt(int traceLevel, IntPtr traceCallback);
 
@@ -28,7 +28,7 @@ public static class ExtLibFunctions
         TestLogCallbacExt(traceLevel, traceDelegatePointer);
     }
 
-    [DllImport("TestLib.dll", EntryPoint = "test_sale",
+    [DllImport("TestLib", EntryPoint = "test_sale",
            CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     private static extern IntPtr TestSaleExt(IntPtr saleRequest);
 
@@ -47,7 +47,7 @@ public static class ExtLibFunctions
         }
     }
 
-    [DllImport("TestLib.dll", EntryPoint = "modify_input",
+    [DllImport("TestLib", EntryPoint = "modify_input",
            CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
     private static extern IntPtr ModifyInputAnsiExt(IntPtr input);
 
@@ -67,7 +67,7 @@ public static class ExtLibFunctions
         }
     }
 
-    [DllImport("TestLib.dll", EntryPoint = "modify_input_uni",
+    [DllImport("TestLib", EntryPoint = "modify_input_uni",
            CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
     private static extern IntPtr ModifyInputUniExt(IntPtr input);
 
