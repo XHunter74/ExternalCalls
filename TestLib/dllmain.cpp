@@ -65,6 +65,12 @@ wchar_t* __cdecl modify_input_uni(const wchar_t* input)
     return output;
 }
 
+extern "C" __declspec(dllexport)
+int __cdecl multiply(int x, int y)
+{
+    return x * y;
+}
+
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD  ul_reason_for_call, LPVOID lpReserved)
 {
     return TRUE;

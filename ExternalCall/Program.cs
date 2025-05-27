@@ -33,5 +33,9 @@ Console.WriteLine($"Input string: {inputStringUnicode}");
 var outputStringUnicode = NativeLibFunctions.ModifyInputUnicode(inputStringUnicode);
 Console.WriteLine($"Modified Unicode string: {outputStringUnicode}");
 
+Console.WriteLine("Multiply values 3 and 9");
+var result = NativeLibFunctions.Multiply(3, 9);
+Console.WriteLine($"Result: {result}");
+
 Console.WriteLine("Press any key to exit...");
 Console.ReadKey(true);

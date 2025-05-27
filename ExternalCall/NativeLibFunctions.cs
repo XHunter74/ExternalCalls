@@ -88,4 +88,11 @@ public static class NativeLibFunctions
             Marshal.FreeHGlobal(inputPointer);
         }
     }
+
+
+    [DllImport("TestLib", EntryPoint = "multiply",
+           CallingConvention = CallingConvention.Cdecl)]
+    public static extern int Multiply(int x, int y);
+
+
 }
