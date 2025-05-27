@@ -7,13 +7,13 @@ internal delegate void IntTraceCallbackDelegate(int traceLevel, IntPtr traceMess
 
 public delegate void TraceCallback(int traceLevel, string traceMessage);
 
-public static class ExtLibFunctions
+public static class NativeLibFunctions
 {
     private static IntTraceCallbackDelegate _callbackKeeper;
 
     [DllImport("TestLib", EntryPoint = "test_log_callback",
            CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    private static extern void TestLogCallbacExt(int traceLevel, IntPtr traceCallback);
+    private static extern void NativeTestLogCallback(int traceLevel, IntPtr traceCallback);
 
     public static void TestLogCallback(int traceLevel, TraceCallback traceCallback)
     {
@@ -27,12 +27,12 @@ public static class ExtLibFunctions
 
         var traceDelegatePointer = Marshal
             .GetFunctionPointerForDelegate(_callbackKeeper);
-        TestLogCallbacExt(traceLevel, traceDelegatePointer);
+        NativeTestLogCallback(traceLevel, traceDelegatePointer);
     }
 
     [DllImport("TestLib", EntryPoint = "test_sale",
            CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    private static extern IntPtr TestSaleExt(IntPtr saleRequest);
+    private static extern IntPtr NativeTestSale(IntPtr saleRequest);
 
     public static SaleResponse TestSale(SaleRequest saleRequest)
     {
@@ -40,7 +40,7 @@ public static class ExtLibFunctions
         Marshal.StructureToPtr(saleRequest, saleRequestPointer, false);
         try
         {
-            var saleResponsePointer = TestSaleExt(saleRequestPointer);
+            var saleResponsePointer = NativeTestSale(saleRequestPointer);
             return Marshal.PtrToStructure<SaleResponse>(saleResponsePointer)!;
         }
         finally
@@ -51,14 +51,14 @@ public static class ExtLibFunctions
 
     [DllImport("TestLib", EntryPoint = "modify_input",
            CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
-    private static extern IntPtr ModifyInputAnsiExt(IntPtr input);
+    private static extern IntPtr NativeModifyInputAnsi(IntPtr input);
 
     public static string? ModifyInputAnsi(string input)
     {
         var inputPointer = Marshal.StringToHGlobalAnsi(input);
         try
         {
-            var modifiedInputPointer = ModifyInputAnsiExt(inputPointer);
+            var modifiedInputPointer = NativeModifyInputAnsi(inputPointer);
             return modifiedInputPointer != IntPtr.Zero
                 ? Marshal.PtrToStringAnsi(modifiedInputPointer)
                 : null;
@@ -71,14 +71,14 @@ public static class ExtLibFunctions
 
     [DllImport("TestLib", EntryPoint = "modify_input_uni",
            CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Unicode)]
-    private static extern IntPtr ModifyInputUniExt(IntPtr input);
+    private static extern IntPtr NativeModifyInputUnicode(IntPtr input);
 
-    public static string? ModifyInputUni(string input)
+    public static string? ModifyInputUnicode(string input)
     {
         var inputPointer = Marshal.StringToHGlobalUni(input);
         try
         {
-            var modifiedInputPointer = ModifyInputUniExt(inputPointer);
+            var modifiedInputPointer = NativeModifyInputUnicode(inputPointer);
             return modifiedInputPointer != IntPtr.Zero
                 ? Marshal.PtrToStringUni(modifiedInputPointer)
                 : null;
